@@ -1,0 +1,57 @@
+SKILL & SOUL PRIVATE AI SUITE
+Private local AI for chat, knowledge, and image creation
+
+PRESENTED BY
+Skill & Soul Studio
+Support: skillsoulstudio@gmail.com
+Website: https://www.skool.com/skill-soul-studio-7220/about
+
+WELCOME
+Skill & Soul Private AI Suite is a private desktop AI environment designed to run locally on your computer after setup.
+
+It brings together local chat, document-based knowledge support, and offline image creation in one workspace, without requiring a cloud service for normal day-to-day use.
+
+IN THE BOX
+- Offline-AI-Workstation-Setup.exe
+- READ-ME-FIRST.txt
+- Offline-AI-Workstation-Quick-Start.pdf
+- Offline-AI-Workstation-Support-Card.pdf
+
+INSTALLATION
+1. Double-click `Offline-AI-Workstation-Setup.exe`
+2. Follow the setup steps on screen
+3. Leave `Create a desktop shortcut` enabled for the easiest launch experience
+4. Open `Skill & Soul Private AI Suite` when installation is complete
+
+CHAT
+1. Open the application
+2. Go to `Chat`
+3. Choose a local model
+4. Click `Start Runtime`
+5. Type your message and click `Send`
+
+KNOWLEDGE
+Use the Knowledge area to import files from the computer and ask questions about them locally.
+
+IMAGE STUDIO
+1. Open `Image Studio`
+2. Click `Start Image Engine`
+3. Enter your prompt
+4. Click `Generate Image`
+
+PERFORMANCE NOTES
+- The first image can take longer on slower systems
+- CPU-only or integrated-graphics systems will generate more slowly
+- Generated images are saved in:
+  `C:\Users\<your-user-name>\.offline-ai-workstation\generated-images`
+
+QUICK HELP
+- If chat does not respond, start the runtime first
+- If image generation has not started, click `Start Image Engine`
+- If an image takes time to appear, keep the engine running and allow the render to complete
+
+PRIVACY
+Skill & Soul Private AI Suite is designed for local use. After setup, normal chat, knowledge, and image workflows can run directly on the machine.
+
+THANK YOU
+Thank you for choosing Skill & Soul Private AI Suite. We hope it becomes a dependable private workspace for writing, research, planning, and creative work.
