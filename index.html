@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skill & Soul Private AI Suite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #08111b;
+    --bg-soft: #0d1724;
+    --surface: rgba(10, 18, 29, 0.72);
+    --surface-strong: #101d2b;
+    --line: rgba(150, 190, 214, 0.18);
+    --text: #ecf5fb;
+    --muted: #9ab0c0;
+    --accent: #4be3c2;
+    --accent-2: #70b8ff;
+    --gold: #d7b67a;
+    --shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+    --max: 1180px;
+    --radius: 28px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    font-family: "Manrope", sans-serif;
+    color: var(--text);
+    background:
+      radial-gradient(circle at 15% 20%, rgba(112, 184, 255, 0.14), transparent 28%),
+      radial-gradient(circle at 85% 18%, rgba(75, 227, 194, 0.14), transparent 24%),
+      radial-gradient(circle at 50% 100%, rgba(215, 182, 122, 0.08), transparent 30%),
+      linear-gradient(180deg, #07101a 0%, #0a1420 46%, #0b1622 100%);
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 88px 88px;
+    mask-image: radial-gradient(circle at center, rgba(0,0,0,0.7), transparent 92%);
+    opacity: 0.18;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  .page-shell {
+    width: min(calc(100% - 40px), var(--max));
+    margin: 0 auto;
+  }
+
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 22px 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    backdrop-filter: blur(18px);
+    background: linear-gradient(180deg, rgba(8, 17, 27, 0.88), rgba(8, 17, 27, 0.48));
+  }
+
+  .brand-lockup {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .brand {
+    font-size: 0.77rem;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 800;
+  }
+
+  .brand-sub {
+    font-size: 0.83rem;
+    color: var(--muted);
+  }
+
+  .nav-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .nav-link,
+  .button {
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 12px 18px;
+    font-size: 0.92rem;
+    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease;
+  }
+
+  .nav-link {
+    color: var(--muted);
+    background: rgba(255,255,255,0.02);
+  }
+
+  .nav-link:hover,
+  .button:hover {
+    transform: translateY(-1px);
+    border-color: rgba(112, 184, 255, 0.45);
+  }
+
+  .button.primary {
+    color: #041017;
+    background: linear-gradient(135deg, var(--accent), #8cf1de);
+    border-color: transparent;
+    font-weight: 800;
+  }
+
+  .button.secondary {
+    background: rgba(255,255,255,0.03);
+    color: var(--text);
+  }
+
+  .hero {
+    min-height: calc(100svh - 88px);
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+    gap: 32px;
+    align-items: end;
+    padding: 42px 0 52px;
+  }
+
+  .hero-copy {
+    padding: 38px 0 22px;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(112, 184, 255, 0.08);
+    border: 1px solid rgba(112, 184, 255, 0.18);
+    color: #cce4ff;
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 22px;
+  }
+
+  .eyebrow::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 6px rgba(75, 227, 194, 0.12);
+  }
+
+  h1 {
+    margin: 0;
+    font-family: "Instrument Serif", serif;
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    max-width: 10.5ch;
+  }
+
+  h1 span {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .hero-lead {
+    max-width: 640px;
+    margin: 22px 0 0;
+    font-size: clamp(1rem, 1.8vw, 1.18rem);
+    line-height: 1.75;
+    color: #d2deea;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 26px;
+    flex-wrap: wrap;
+    margin-top: 28px;
+    color: var(--muted);
+    font-size: 0.93rem;
+  }
+
+  .hero-meta strong {
+    display: block;
+    color: var(--text);
+    font-size: 1rem;
+    margin-bottom: 2px;
+  }
+
+  .hero-panel {
+    position: relative;
+    border-radius: calc(var(--radius) + 8px);
+    padding: 30px;
+    background:
+      linear-gradient(180deg, rgba(12, 24, 37, 0.95), rgba(10, 18, 28, 0.88)),
+      radial-gradient(circle at top right, rgba(75, 227, 194, 0.12), transparent 40%);
+    border: 1px solid rgba(112, 184, 255, 0.18);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .hero-panel::before {
+    content: "";
+    position: absolute;
+    inset: auto -10% 18% -10%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(112,184,255,0.4), transparent);
+  }
+
+  .panel-label {
+    color: var(--accent);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+
+  .panel-title {
+    margin: 16px 0 10px;
+    font-size: 1.45rem;
+    line-height: 1.25;
+    font-weight: 700;
+  }
+
+  .panel-copy {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.7;
+    font-size: 0.98rem;
+  }
+
+  .panel-stack {
+    display: grid;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .stack-row {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 12px;
+  }
+
+  .stack-card {
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(154, 176, 192, 0.13);
+  }
+
+  .stack-card .kicker {
+    color: var(--muted);
+    font-size: 0.76rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .stack-card .value {
+    margin-top: 8px;
+    font-size: 1rem;
+    line-height: 1.45;
+    font-weight: 700;
+  }
+
+  .stack-card.accent {
+    background: linear-gradient(135deg, rgba(75, 227, 194, 0.14), rgba(112, 184, 255, 0.08));
+    border-color: rgba(75, 227, 194, 0.18);
+  }
+
+  .section {
+    padding: 82px 0;
+  }
+
+  .section-head {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 20px;
+    align-items: end;
+    margin-bottom: 30px;
+  }
+
+  .section-kicker {
+    margin-bottom: 10px;
+    color: var(--accent);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  h2 {
+    margin: 0;
+    font-family: "Instrument Serif", serif;
+    font-size: clamp(2.3rem, 5vw, 4rem);
+    line-height: 0.97;
+    letter-spacing: -0.03em;
+  }
+
+  .section-note {
+    max-width: 460px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .ribbon {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: rgba(215, 182, 122, 0.12);
+    color: #f4deb5;
+    border: 1px solid rgba(215, 182, 122, 0.18);
+    font-size: 0.84rem;
+  }
+
+  .download-stage {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 26px;
+  }
+
+  .download-card,
+  .detail-card,
+  .faq-item {
+    border-radius: var(--radius);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    backdrop-filter: blur(12px);
+  }
+
+  .download-card {
+    padding: 30px;
+  }
+
+  .download-topline {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+
+  .download-topline .label {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .download-topline .meta {
+    color: #d7e4ef;
+    font-size: 0.9rem;
+  }
+
+  .download-card h3,
+  .detail-card h3 {
+    margin: 0;
+    font-size: 1.45rem;
+    line-height: 1.25;
+  }
+
+  .download-card p,
+  .detail-card p,
+  .faq-answer {
+    color: var(--muted);
+    line-height: 1.75;
+    font-size: 0.98rem;
+  }
+
+  .download-list {
+    display: grid;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .download-item {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: center;
+    padding: 16px 18px;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(154, 176, 192, 0.12);
+  }
+
+  .download-item strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 1rem;
+  }
+
+  .download-item span {
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .file-button {
+    white-space: nowrap;
+    border-radius: 999px;
+    padding: 12px 16px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    border: 1px solid rgba(112,184,255,0.28);
+    color: #dff1ff;
+    background: rgba(112,184,255,0.08);
+    transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+  }
+
+  .file-button:hover {
+    transform: translateY(-1px);
+    background: rgba(112,184,255,0.16);
+    border-color: rgba(112,184,255,0.46);
+  }
+
+  .detail-card {
+    padding: 28px;
+    display: grid;
+    gap: 18px;
+    align-content: start;
+  }
+
+  .detail-card ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 12px;
+  }
+
+  .detail-card li {
+    padding-left: 18px;
+    position: relative;
+    color: #d6e2ec;
+    line-height: 1.6;
+  }
+
+  .detail-card li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.7em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 6px rgba(75, 227, 194, 0.08);
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .feature-block {
+    padding: 24px;
+    border-radius: 24px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(154, 176, 192, 0.12);
+    min-height: 220px;
+  }
+
+  .feature-block .index {
+    color: var(--gold);
+    font-size: 0.8rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 800;
+  }
+
+  .feature-block h3 {
+    margin: 18px 0 10px;
+    font-size: 1.25rem;
+  }
+
+  .feature-block p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.75;
+  }
+
+  .system-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .system-cell {
+    padding: 22px;
+    border-radius: 22px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(154, 176, 192, 0.12);
+  }
+
+  .system-cell .tag {
+    color: var(--muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .system-cell strong {
+    display: block;
+    margin-top: 12px;
+    font-size: 1.08rem;
+    line-height: 1.5;
+  }
+
+  .faq-list {
+    display: grid;
+    gap: 14px;
+  }
+
+  .faq-item {
+    padding: 22px 24px;
+  }
+
+  .faq-question {
+    margin: 0 0 10px;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  .contact-band {
+    border-radius: calc(var(--radius) + 4px);
+    padding: 30px;
+    background:
+      linear-gradient(135deg, rgba(16, 29, 43, 0.95), rgba(10, 18, 29, 0.9)),
+      radial-gradient(circle at top right, rgba(112,184,255,0.15), transparent 35%);
+    border: 1px solid rgba(112, 184, 255, 0.18);
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 18px;
+    align-items: center;
+  }
+
+  .contact-band p {
+    color: var(--muted);
+    line-height: 1.75;
+    margin: 12px 0 0;
+  }
+
+  .contact-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  footer {
+    padding: 36px 0 56px;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  footer strong {
+    color: var(--text);
+  }
+
+  @media (max-width: 1080px) {
+    .hero,
+    .download-stage,
+    .contact-band,
+    .feature-grid,
+    .system-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .feature-grid {
+      gap: 16px;
+    }
+
+    .system-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .section-head {
+      grid-template-columns: 1fr;
+    }
+
+    .contact-actions {
+      justify-content: flex-start;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .page-shell {
+      width: min(calc(100% - 24px), var(--max));
+    }
+
+    .topbar {
+      position: static;
+      padding: 18px 0 8px;
+    }
+
+    .nav-actions {
+      width: 100%;
+      justify-content: flex-start;
+    }
+
+    .hero {
+      min-height: auto;
+      padding-top: 18px;
+    }
+
+    .hero-copy,
+    .hero-panel,
+    .download-card,
+    .detail-card,
+    .contact-band,
+    .faq-item {
+      padding: 22px;
+    }
+
+    .hero-actions,
+    .nav-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .button,
+    .nav-link,
+    .file-button {
+      text-align: center;
+      justify-content: center;
+    }
+
+    .stack-row {
+      grid-template-columns: 1fr;
+    }
+
+    .download-item {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .system-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="brand-lockup">
+        <div class="brand">Skill & Soul Studio</div>
+        <div class="brand-sub">Private local AI software for direct Windows delivery</div>
+      </div>
+      <div class="nav-actions">
+        <a class="nav-link" href="#features">Features</a>
+        <a class="nav-link" href="#requirements">Requirements</a>
+        <a class="button primary" href="#download">Download for Windows</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow">Download-ready Windows release</div>
+          <h1>Skill & Soul <span>Private AI Suite</span></h1>
+          <p class="hero-lead">
+            A premium offline workstation for private chat, knowledge-base support, and local image creation. Install once, run locally, and keep your workflow on the machine after setup.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#download">Download the Installer</a>
+            <a class="button secondary" href="https://www.skool.com/skill-soul-studio-7220/about" target="_blank" rel="noreferrer">Join the Community</a>
+          </div>
+          <div class="hero-meta">
+            <div><strong>Windows desktop installer</strong>Designed for direct customer download</div>
+            <div><strong>Offline-first workflow</strong>Chat, docs, and images after setup</div>
+            <div><strong>Support included</strong>skillsoulstudio@gmail.com</div>
+          </div>
+        </div>
+
+        <aside class="hero-panel">
+          <div class="panel-label">Inside the suite</div>
+          <h2 class="panel-title">One private workspace for chat, knowledge, and visual creation.</h2>
+          <p class="panel-copy">
+            This delivery page is built for the simplest customer flow: read what it does, download the Windows installer, and keep the quick-start and support files close by.
+          </p>
+          <div class="panel-stack">
+            <div class="stack-row">
+              <div class="stack-card accent">
+                <div class="kicker">Primary download</div>
+                <div class="value">Offline-AI-Workstation-Setup.exe</div>
+              </div>
+              <div class="stack-card">
+                <div class="kicker">Support</div>
+                <div class="value">Skill & Soul Studio<br>skillsoulstudio@gmail.com</div>
+              </div>
+            </div>
+            <div class="stack-row">
+              <div class="stack-card">
+                <div class="kicker">Includes</div>
+                <div class="value">Installer, quick-start PDF, support card, text guides</div>
+              </div>
+              <div class="stack-card">
+                <div class="kicker">Best use</div>
+                <div class="value">Private writing, research, document Q&A, image prompts</div>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="section" id="download">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Download</div>
+            <h2>A simple customer handoff.</h2>
+          </div>
+          <div class="ribbon">Best delivery flow: website page plus direct installer download</div>
+        </div>
+
+        <div class="download-stage">
+          <div class="download-card">
+            <div class="download-topline">
+              <div class="label">Main package</div>
+              <div class="meta">Windows installer and companion documents</div>
+            </div>
+            <h3>Give customers one clear button first, and host the installer through GitHub Releases.</h3>
+            <p>
+              This version is prepared for the cleanest public setup: a Netlify landing page paired with a GitHub Release for the large Windows installer. The first button should always go to the latest release.
+            </p>
+
+            <div class="download-list">
+              <div class="download-item">
+                <div>
+                  <strong>Windows Installer</strong>
+                  <span>Primary customer download via GitHub Release</span>
+                </div>
+                <a class="file-button" href="https://github.com/mjhouseonline-netizen/skill-soul-private-ai-suite/releases/latest" target="_blank" rel="noreferrer">Open release</a>
+              </div>
+              <div class="download-item">
+                <div>
+                  <strong>Quick Start Guide</strong>
+                  <span>Text quick-start hosted with the site repo</span>
+                </div>
+                <a class="file-button" href="https://raw.githubusercontent.com/mjhouseonline-netizen/skill-soul-private-ai-suite/main/READ-ME-FIRST.txt" target="_blank" rel="noreferrer">Open guide</a>
+              </div>
+              <div class="download-item">
+                <div>
+                  <strong>Support Card</strong>
+                  <span>Customer-facing support details</span>
+                </div>
+                <a class="file-button" href="https://raw.githubusercontent.com/mjhouseonline-netizen/skill-soul-private-ai-suite/main/SUPPORT-CARD.txt" target="_blank" rel="noreferrer">Open support</a>
+              </div>
+              <div class="download-item">
+                <div>
+                  <strong>GitHub Repository</strong>
+                  <span>Source for the landing page and delivery docs</span>
+                </div>
+                <a class="file-button" href="https://github.com/mjhouseonline-netizen/skill-soul-private-ai-suite" target="_blank" rel="noreferrer">Open repo</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-card">
+            <div class="section-kicker">Recommended delivery</div>
+            <h3>Use this page as the front door, not the installer folder.</h3>
+            <p>
+              Customers should land on a polished page, click one download button, and install. They should never have to browse your build folders or open developer files.
+            </p>
+            <ul>
+              <li>Host the landing page on Netlify and keep the installer in a GitHub Release.</li>
+              <li>Use the GitHub Release page as the primary installer destination for the `.exe`.</li>
+              <li>Keep the installer filename stable, even if the product branding on the page evolves.</li>
+              <li>Use your Skool community as the support and onboarding destination.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="features">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Features</div>
+            <h2>Built for private, practical work.</h2>
+          </div>
+          <div class="section-note">
+            The page below explains the product clearly without forcing people to understand the internal tooling. It sells the workflow, not the engineering stack.
+          </div>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-block">
+            <div class="index">01 · Chat</div>
+            <h3>Local AI chat</h3>
+            <p>Choose a local model, start the runtime, and work entirely inside a private desktop environment after setup.</p>
+          </article>
+          <article class="feature-block">
+            <div class="index">02 · Knowledge</div>
+            <h3>Document-based support</h3>
+            <p>Import local files into the knowledge area and ask questions about your own material without moving the workflow into the cloud.</p>
+          </article>
+          <article class="feature-block">
+            <div class="index">03 · Images</div>
+            <h3>Offline image studio</h3>
+            <p>Create prompt-based images with a built-in image workflow and keep generated files saved locally on the machine.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="requirements">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">Requirements</div>
+            <h2>What customers need before they install.</h2>
+          </div>
+          <div class="section-note">
+            Keep this section near the download button so people can self-qualify quickly and avoid support friction.
+          </div>
+        </div>
+
+        <div class="system-grid">
+          <div class="system-cell">
+            <div class="tag">Operating system</div>
+            <strong>Windows desktop environment</strong>
+          </div>
+          <div class="system-cell">
+            <div class="tag">Memory</div>
+            <strong>16 GB RAM recommended for a smoother experience</strong>
+          </div>
+          <div class="system-cell">
+            <div class="tag">Storage</div>
+            <strong>Allow room for the installed app, models, and generated files</strong>
+          </div>
+          <div class="system-cell">
+            <div class="tag">Graphics</div>
+            <strong>Integrated graphics can work, but image generation may be slower</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <div class="section-kicker">FAQ</div>
+            <h2>Answer the questions before they become support tickets.</h2>
+          </div>
+        </div>
+
+        <div class="faq-list">
+          <div class="faq-item">
+            <p class="faq-question">Should I attach the installer to an HTML file?</p>
+            <p class="faq-answer">No. Use the HTML page as the presentation layer and the installer as a direct download file. Customers should click a button and download the `.exe` cleanly.</p>
+          </div>
+          <div class="faq-item">
+            <p class="faq-question">How should the large installer be delivered?</p>
+            <p class="faq-answer">Keep the landing page on Netlify and upload the installer to a GitHub Release. The page can then send customers straight to the latest release download without bundling the `.exe` into the website deploy.</p>
+          </div>
+          <div class="faq-item">
+            <p class="faq-question">What is the best public delivery flow?</p>
+            <p class="faq-answer">A simple branded Netlify page, a GitHub Release for the Windows installer, and clear support links to Skill & Soul Studio and your Skool community. That keeps the experience clean and trustworthy.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="contact-band">
+          <div>
+            <div class="section-kicker">Support & Community</div>
+            <h2>Keep the install page close to your support channel.</h2>
+            <p>
+              The strongest version of this delivery flow is a polished landing page, a direct installer link, and an obvious place for support. Your Skool community is already the right destination for that.
+            </p>
+          </div>
+          <div class="contact-actions">
+            <a class="button primary" href="https://www.skool.com/skill-soul-studio-7220/about" target="_blank" rel="noreferrer">Open Skool Community</a>
+            <a class="button secondary" href="mailto:skillsoulstudio@gmail.com">Email Support</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <strong>Skill & Soul Private AI Suite</strong><br>
+      Presented by Skill & Soul Studio · Support: skillsoulstudio@gmail.com · Community: skool.com/skill-soul-studio-7220/about
+    </footer>
+  </div>
+</body>
+</html>
