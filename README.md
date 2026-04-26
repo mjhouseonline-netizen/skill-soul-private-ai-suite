@@ -6,13 +6,11 @@ This repository holds the public landing page and customer-facing support files 
 - `index.html` - landing page for the Windows download flow
 - `READ-ME-FIRST.txt` - customer quick-start text guide
 - `SUPPORT-CARD.txt` - customer support reference
-- `mac-installer/` - separate macOS installer source and cloud build workflow
 
 ## Delivery structure
 - The website should be deployed from this repository
 - The large Windows installer should be uploaded to **GitHub Releases**
 - The landing page should point customers to the latest GitHub Release for the `.exe`
-- The macOS installer source stays isolated in `mac-installer/` and can be built on GitHub Actions
 
 ## Brand details
 - Company: Skill & Soul Studio
@@ -21,6 +19,3 @@ This repository holds the public landing page and customer-facing support files 
 
 ## Next step
 Create a GitHub Release and upload `Offline-AI-Workstation-Setup.exe` as the release asset.
-
-## macOS build
-Use the GitHub Actions workflow `Build macOS Installer` to build the separate mac version from `mac-installer/`.
